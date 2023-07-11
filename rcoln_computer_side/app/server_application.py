@@ -3,6 +3,11 @@ from server_manager import ServerManager
 import threading
 
 
+# TODO
+# dedect computer ip-port pass it to server.
+# server will send packages to computer's
+
+
 class ServerManagerApp:
     # fields
     sm = ServerManager("rcoln_api\config.ini")
