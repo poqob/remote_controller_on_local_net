@@ -25,7 +25,7 @@ class UDPServer:
                 # Handle the OSError if needed
                 # print("Error occurred:", e)
                 break
-        self.kill_server()
+        # self.kill_server()
 
     def kill_server(self):
         if self.udp_socket:

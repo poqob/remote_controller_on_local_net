@@ -1,16 +1,15 @@
 import tkinter as tk
-from server_manager import ServerManager
+from rcoln_api.server_manager import ServerManager
 import threading
 
-
 # TODO
-# dedect computer ip-port pass it to server.
+# dedect computer ip-port pass it to server. --later
 # server will send packages to computer's
 
 
-class ServerManagerApp:
+class App:
     # fields
-    sm = ServerManager("rcoln_api\config.ini")
+    sm = ServerManager("..\rcoln_api\config.ini")
     global root
 
     def __init__(self, root):
@@ -41,5 +40,5 @@ class ServerManagerApp:
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("Server Manager")
-    app = ServerManagerApp(root)
+    app = App(root)
     root.mainloop()
