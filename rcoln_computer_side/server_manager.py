@@ -1,7 +1,6 @@
 from server import UDPServer
 import configparser
 
-
 class ServerManager:
     # constructor
     def __init__(self, config_file_path) -> None:
@@ -21,3 +20,6 @@ class ServerManager:
 
     def stop(self) -> None:
         self.server.kill_server()
+
+    def get_ip_port(self):
+        return self.server.get_local_ip_port()

@@ -32,3 +32,13 @@ class UDPServer:
             self.udp_socket.close()
             self.udp_socket = None
             print("Server killed.")
+
+    def get_local_ip_port(self):
+         # Create a temporary socket to retrieve the local IP and port
+        temp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        temp_socket.connect(("8.8.8.8", 80))  # Connect to a known external IP
+
+        ip_port = f"IP: {temp_socket.getsockname()[0]}, Port: {self.port}"
+
+        temp_socket.close()
+        return ip_port
