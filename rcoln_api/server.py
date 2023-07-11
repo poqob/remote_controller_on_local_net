@@ -15,8 +15,12 @@ class UDPServer:
 
         while True:
             try:
+                # action
                 data, sender_address = self.udp_socket.recvfrom(self.buffer_size)
-                print("Received data:", data.decode("utf-8"))
+                print(
+                    f"Received data from {sender_address[0]}: ",
+                    data.decode("utf-8"),
+                )
             except OSError as e:
                 # Handle the OSError if needed
                 # print("Error occurred:", e)
