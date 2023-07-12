@@ -16,27 +16,8 @@
 # service:'m'
 # x:'numeric value'
 # y:'numeric value'
-import json
-from types import SimpleNamespace
 from keyboard_service import KeyboardService
-
-
-class Model:
-    _service = None
-    _key = None
-
-    def __init__(self, service, key) -> None:
-        self._service = service
-        self._key = key
-
-    def toJson(self) -> str:
-        return json.dumps(self.__dict__)
-
-    def fromJson(inpt):
-        # Parse JSON into an object with attributes corresponding to dict keys.
-        x = json.loads(inpt, object_hook=lambda d: SimpleNamespace(**d))
-        # print(x._service, x._key)
-        return x
+from model import Services, Model
 
 
 class PackageHandler:
@@ -49,10 +30,12 @@ class PackageHandler:
         model = Model.fromJson(model)
 
         match model._service:
-            case "k":
+            case Services.KEYBOARD:
                 print("keyboard input")
                 KeyboardService.singlePressAndRelease(model._key)
-            case "m":
+            case Services.MOUSE:
                 print("mouse input")
+            case Services.OTHER:
+                print("other input")
             case _:
-                print("other input :s")
+                print("undefine input")
