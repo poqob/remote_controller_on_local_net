@@ -1,5 +1,5 @@
 import keyboard
-
+from pipeline import *
 
 # {KeyboardService}
 # keyable input types for keyboard service:
@@ -26,6 +26,9 @@ import keyboard
 
 
 class KeyboardService:
+    # fields
+    keyboardPipeline = Pipeline()
+
     def __new__(cls):
         raise TypeError("Static classes can't be instantied")
 
@@ -39,12 +42,11 @@ class KeyboardService:
     def singlePress(key):
         keyboard.press(key)
 
-    # makes key release up to given key
-    @staticmethod
-    def releaseKey(key):
-        keyboard.release(key)
-
     # makes single character press and release (PAR, press and release)
     @staticmethod
     def singlePressAndRelease(key):
         keyboard.press_and_release(key)
+
+
+class Pipeline:
+    pass
