@@ -8,7 +8,8 @@
 
 
 # service:'k'
-# key:'key'(keyboard)
+# hotkey?: false
+# input:'keys'(keyboard)
 
 
 # may i convert it to a drag service :D
@@ -50,7 +51,7 @@ class PackageHandler:
         match model._service:
             case "k":
                 print("keyboard input")
-                KeyboardService.hotkey()
+                KeyboardService.singlePressAndRelease(model._key)
             case "m":
                 print("mouse input")
             case _:
