@@ -9,7 +9,13 @@ class Statuses(Enum):
     HELD = (1,)
 
 
+class PipelineStatuses(Enum):
+    empty = (0,)
+    full = (1,)
+
+
 class Pipeline:
+    pipelineStatus = PipelineStatuses.empty
     status = None
     q1 = queue.Queue()
 
@@ -22,13 +28,10 @@ class Pipeline:
         self.addEvent(Model(0, "d"))
         self.addEvent(Model(0, "g"))
 
-        for i in range(self.q1.qsize()):
-            var = self.pop()
-            print(f"status: {var[0].name}, key: {var[1]._key}")
-
     # server_service_handler will add events
     def addEvent(self, event):
         self.q1.put(event)
+        self.pipelineStatus = PipelineStatuses.full
 
     # keyboard service will pop events
     def pop(self):
@@ -39,6 +42,7 @@ class Pipeline:
             next = self.q1.queue[0]
         else:
             next = Model(0, "")
+            self.pipelineStatus = PipelineStatuses.empty
 
         # setting status up to equality state of consecutive elements.
         if next._key is popped._key:
@@ -46,8 +50,6 @@ class Pipeline:
         else:
             self.status = Statuses.TAP_AND_RELEASE
 
+        print(f"status: {self.status.name}, key: {popped._key}")
         return self.status, popped
         # print(f"{self.status.name} keycurr: {curr._key} keyprev: {prev._key}")
-
-
-s = Pipeline()
