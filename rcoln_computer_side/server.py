@@ -1,4 +1,5 @@
 import socket
+from server_data_handler import PackageHandler
 
 
 class UDPServer:
@@ -17,10 +18,7 @@ class UDPServer:
             try:
                 # action
                 data, sender_address = self.udp_socket.recvfrom(self.buffer_size)
-                print(
-                    f"Received data from {sender_address[0]}: ",
-                    data.decode("utf-8"),
-                )
+                PackageHandler.handle(data=data, serder_address=sender_address)
             except OSError as e:
                 # Handle the OSError if needed
                 # print("Error occurred:", e)
@@ -34,7 +32,7 @@ class UDPServer:
             print("Server killed.")
 
     def get_local_ip_port(self):
-         # Create a temporary socket to retrieve the local IP and port
+        # Create a temporary socket to retrieve the local IP and port
         temp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         temp_socket.connect(("8.8.8.8", 80))  # Connect to a known external IP
 

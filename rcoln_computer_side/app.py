@@ -1,8 +1,7 @@
-
-#TODO
-#start local server on local computer ip and port 
-#show ip and port 
-#take action according to udp package's data.
+# TODO
+# start local server on local computer ip and port
+# show ip and port
+# take action according to udp package's data.
 
 
 import tkinter as tk
@@ -18,7 +17,6 @@ import socket
 class ServerManagerApp:
     # fields
     sm = ServerManager("rcoln_computer_side\config.ini")
-    global root
 
     def __init__(self, root):
         self.root = root
@@ -28,10 +26,9 @@ class ServerManagerApp:
 
         # Get the local IP address and port
         self.ip_port = self.sm.get_ip_port()
-          # Create the IP:Port label
+        # Create the IP:Port label
         self.ip_port_label = tk.Label(self.frame, text=self.ip_port)
         self.ip_port_label.grid(row=0, columnspan=2)
-
 
         # Create the buttons
         self.start_button = tk.Button(
@@ -50,8 +47,6 @@ class ServerManagerApp:
 
     def stop_server(self):
         self.sm.stop()
-
-   
 
 
 if __name__ == "__main__":
