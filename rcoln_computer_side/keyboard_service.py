@@ -27,10 +27,17 @@ from pipeline import *
 
 class KeyboardService:
     # fields
-    keyboardPipeline = Pipeline()
 
     def __new__(cls):
         raise TypeError("Static classes can't be instantied")
+
+    # pop() method returns status, model.
+    # up to status send model to press modes.
+    @staticmethod
+    def listen():
+        keyboardPipeline = Pipeline()
+        while keyboardPipeline.pipelineStatus is PipelineStatuses.full:
+            keyboardPipeline.pop()
 
     @staticmethod
     def hotkey(hotkey):
@@ -48,5 +55,4 @@ class KeyboardService:
         keyboard.press_and_release(key)
 
 
-class Pipeline:
-    pass
+k = KeyboardService.listen()
