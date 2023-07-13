@@ -1,7 +1,6 @@
 import keyboard
 from pipeline import Pipeline, KeyStatuses
 import time
-import multiprocessing
 
 
 class KeyboardService:
@@ -10,9 +9,8 @@ class KeyboardService:
 
     def listen(self):
         while True:
+            time.sleep(0.02)
             keystatus, model = self.keyboardPipeline.popEvent()
-
-            # controll the model if it is hotkey or not
 
             match keystatus:
                 case KeyStatuses.TAP_AND_RELEASE:
@@ -31,15 +29,3 @@ class KeyboardService:
     @staticmethod
     def singlePressAndRelease(key):
         keyboard.press_and_release(key)
-
-
-if __name__ == "__main__":
-    ks = KeyboardService()
-
-    process = multiprocessing.Process(target=ks.listen)
-    process.start()
-
-    # Stop the keyboard service by terminating the process
-    process.terminate()
-    process.join()
-    print("ks stopped")
