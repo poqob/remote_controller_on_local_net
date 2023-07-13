@@ -1,12 +1,5 @@
-from enum import Enum
 from types import SimpleNamespace
 import json
-
-
-class Services(Enum):
-    KEYBOARD = 0
-    MOUSE = 1
-    OTHER = 2
 
 
 class Model:
