@@ -1,9 +1,10 @@
 from servicesEnum import Services
-import keyboard
+from model import Model
 import time
-import queue
-from enum import Enum
+import keyboard
 import threading
+from enum import Enum
+import queue
 
 
 class KeyStatuses(Enum):
@@ -45,12 +46,6 @@ class Pipeline:
         return self.status, popped
 
 
-class Model:
-    def __init__(self, key, value):
-        self._key = key
-        self._value = value
-
-
 class ServiceHandler:
     def __init__(self) -> None:
         self.keyboardService = None
@@ -71,6 +66,14 @@ class ServiceHandler:
         if self.keyboardService:
             self.keyboardService.stopService()
             self.keyboardService = None
+
+
+if __name__ == "__main__":
+    sh = ServiceHandler()
+    model = Model(0, "windows+d")
+    sh.accept(Services.KEYBOARD, model)
+    time.sleep(1)
+    sh.killServices()
 
 
 class KeyboardService:
@@ -110,11 +113,3 @@ class KeyboardService:
     @staticmethod
     def singlePressAndRelease(key):
         keyboard.press_and_release(key)
-
-
-if __name__ == "__main__":
-    sh = ServiceHandler()
-    model = Model(0, "windows+d")
-    sh.accept(Services.KEYBOARD, model)
-    time.sleep(1)
-    sh.killServices()
