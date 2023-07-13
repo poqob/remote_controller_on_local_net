@@ -1,17 +1,19 @@
 import tkinter as tk
 import socket
-
+from model import Model, Services
 
 # 0: create socket, 1: socket type-UDP
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 # Replace with the desired destination IP address
-destination_address = '127.0.0.1'
+destination_address = "127.0.0.1"
 destination_port = 5100  # Replace with the desired destination port
 
 
 def send(data):
-    bytes_data = data.encode('utf-8')
+    model = Model(service=Services.KEYBOARD.value, key=data)
+    print(model.toJson())
+    bytes_data = model.toJson().encode("utf-8")
     sock.sendto(bytes_data, (destination_address, destination_port))
 
 
@@ -34,7 +36,7 @@ def create_tkinter_app():
     button1.grid(row=0, column=0, padx=10)
     # Bind left mouse button click event
     button1.bind("<Button-1>", button_click)
-    button2 = tk.Button(frame, text="D")
+    button2 = tk.Button(frame, text="F")
     # Bind left mouse button click event
     button2.bind("<Button-1>", button_click)
     button2.grid(row=0, column=1, padx=10)
