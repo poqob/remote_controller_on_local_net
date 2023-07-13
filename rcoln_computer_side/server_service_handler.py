@@ -30,12 +30,12 @@ class PackageHandler:
         model = Model.fromJson(model)
 
         match model._service:
-            case Services.KEYBOARD:
+            case Services.KEYBOARD.value:
                 print("keyboard input")
-                KeyboardService.singlePressAndRelease(model._key)
-            case Services.MOUSE:
+                KeyboardService.addEventToPipeline(model)
+            case Services.MOUSE.value:
                 print("mouse input")
-            case Services.OTHER:
+            case Services.OTHER.value:
                 print("other input")
             case _:
-                print("undefine input")
+                print(f"undefine input: {model._service}")

@@ -4,9 +4,9 @@ import json
 
 
 class Services(Enum):
-    KEYBOARD = (0,)
-    MOUSE = (1,)
-    OTHER = (2,)
+    KEYBOARD = 0
+    MOUSE = 1
+    OTHER = 2
 
 
 class Model:
