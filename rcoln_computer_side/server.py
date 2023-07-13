@@ -1,5 +1,6 @@
 import socket
-from server_data_handler import PackageHandler
+from server_service_handler import PackageHandler
+from keyboard_service import KeyboardService
 
 
 class UDPServer:
@@ -12,6 +13,7 @@ class UDPServer:
     def start_server(self):
         self.udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.udp_socket.bind((self.address, self.port))
+        KeyboardService.startService()
         print(f"Server started on: {self.address}:{self.port}")
 
         while True:
@@ -29,6 +31,7 @@ class UDPServer:
         if self.udp_socket:
             self.udp_socket.close()
             self.udp_socket = None
+            KeyboardService.stopService()
             print("Server killed.")
 
     def get_local_ip_port(self):

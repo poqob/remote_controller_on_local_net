@@ -1,5 +1,7 @@
 import keyboard
 from pipeline import *
+import time
+import threading
 
 # {KeyboardService}
 # keyable input types for keyboard service:
@@ -27,17 +29,37 @@ from pipeline import *
 
 class KeyboardService:
     # fields
+    # Create an event object to signal the thread to stop
+    global stop_event
+    global thread
+
+    stop_event = threading.Event()
 
     def __new__(cls):
         raise TypeError("Static classes can't be instantied")
 
     # pop() method returns status, model.
     # up to status send model to press modes.
+    global keyboardPipeline
+    keyboardPipeline = Pipeline()
+
+    # OPEN A THREAD
     @staticmethod
     def listen():
-        keyboardPipeline = Pipeline()
-        while keyboardPipeline.pipelineStatus is PipelineStatuses.full:
-            keyboardPipeline.pop()
+        while (
+            not stop_event.is_set()
+        ):  # Check if the event is set  # keyboardPipeline.pipelineStatus is PipelineStatuses.full:
+            time.sleep(0.02)
+            keystatus, model = keyboardPipeline.popEvent()
+            match keystatus:
+                case KeyStatuses.TAP_AND_RELEASE:
+                    KeyboardService.singlePressAndRelease(model._key)
+                case KeyStatuses.HELD:
+                    KeyboardService.singlePress(model._key)
+
+    @staticmethod
+    def addEventToPipeline(event):
+        keyboardPipeline.addEvent(event=event)
 
     @staticmethod
     def hotkey(hotkey):
@@ -47,6 +69,7 @@ class KeyboardService:
     # makes single character press (HELD)
     @staticmethod
     def singlePress(key):
+        time.sleep(0.02)
         keyboard.press(key)
 
     # makes single character press and release (PAR, press and release)
@@ -54,5 +77,13 @@ class KeyboardService:
     def singlePressAndRelease(key):
         keyboard.press_and_release(key)
 
+    @staticmethod
+    def stopService():
+        stop_event.set()  # Set the event to stop the thread
+        # thread.join()  # Wait for the thread to finish
 
-k = KeyboardService.listen()
+    @staticmethod
+    def startService():
+        stop_event.clear()
+        thread = threading.Thread(target=KeyboardService.listen)
+        thread.start()
