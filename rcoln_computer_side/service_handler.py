@@ -6,6 +6,8 @@ import threading
 from enum import Enum
 import queue
 
+# why i cannot seperate this module to modules????
+
 
 class KeyStatuses(Enum):
     TAP_AND_RELEASE = 0
