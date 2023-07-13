@@ -1,17 +1,16 @@
-#
 import queue
 from enum import Enum
 from model import Model
 
 
 class KeyStatuses(Enum):
-    TAP_AND_RELEASE = (0,)
-    HELD = (1,)
+    TAP_AND_RELEASE = 0
+    HELD = 1
 
 
 class PipelineStatuses(Enum):
-    empty = (0,)
-    full = (1,)
+    empty = 0
+    full = 1
 
 
 class Pipeline:
@@ -21,12 +20,7 @@ class Pipeline:
 
     # simulating keyboard service stream
     def __init__(self) -> None:
-        self.addEvent(Model(0, "windows"))
-        self.addEvent(Model(0, "f"))
-        self.addEvent(Model(0, "p"))
-        self.addEvent(Model(0, "d"))
-        self.addEvent(Model(0, "d"))
-        self.addEvent(Model(0, "g"))
+        pass
 
     # server_service_handler will add events
     def addEvent(self, event):
@@ -50,6 +44,7 @@ class Pipeline:
         else:
             self.status = KeyStatuses.TAP_AND_RELEASE
 
-        print(f"status: {self.status.name}, key: {popped._key}")
+        print("zortt from pipeline pop()")
+        # print(f"status: {self.status.name}, key: {popped._key}")
         return self.status, popped
         # print(f"{self.status.name} keycurr: {curr._key} keyprev: {prev._key}")
