@@ -18,33 +18,25 @@ class Pipeline:
     status = None
     q1 = queue.Queue()
 
-    # simulating keyboard service stream
     def __init__(self) -> None:
         pass
 
-    # server_service_handler will add events
     def addEvent(self, event):
         self.q1.put(event)
         self.pipelineStatus = PipelineStatuses.full
 
-    # keyboard service will pop events
     def popEvent(self):
-        # controlling if popped queue item and next queue item value is equal each other.
-        # checking if consecutive elements have equal values.
         popped = self.q1.get()
         if self.q1.qsize() >= 1:
-            next = self.q1.queue[0]
+            next_event = self.q1.queue[0]
         else:
-            next = Model(0, "")
+            next_event = Model(0, "")
             self.pipelineStatus = PipelineStatuses.empty
 
-        # setting status up to equality state of consecutive elements.
-        if next._key is popped._key:
+        if next_event._key == popped._key:
             self.status = KeyStatuses.HELD
         else:
             self.status = KeyStatuses.TAP_AND_RELEASE
-
         print("zortt from pipeline pop()")
-        # print(f"status: {self.status.name}, key: {popped._key}")
+        print(f"status: {self.status.name}, key: {popped._key}")
         return self.status, popped
-        # print(f"{self.status.name} keycurr: {curr._key} keyprev: {prev._key}")
