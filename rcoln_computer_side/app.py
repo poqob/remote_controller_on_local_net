@@ -1,13 +1,5 @@
-# TODO
-# start local server on local computer ip and port
-# show ip and port
-# take action according to udp package's data.
-
-
 import tkinter as tk
 from server_manager import ServerManager
-import threading
-import socket
 
 # TODO
 # dedect computer ip-port pass it to server. --later
@@ -32,25 +24,25 @@ class ServerManagerApp:
 
         # Create the buttons
         self.start_button = tk.Button(
-            self.frame, text="Start Server", command=self.start_server
+            self.frame, text="Start Server", command=self.sm.start
         )
         self.start_button.grid(row=1, column=0, padx=10)
 
         self.stop_button = tk.Button(
-            self.frame, text="Stop Server", command=self.stop_server
+            self.frame, text="Stop Server", command=self.sm.stop
         )
         self.stop_button.grid(row=1, column=1, padx=10)
 
-    def start_server(self):
-        # threading
-        threading.Thread(target=self.sm.start).start()
-
-    def stop_server(self):
-        self.sm.stop()
+    def on_destroy(self):
+        # kill server
+        self.sm.destroy()
+        self.root.destroy()
+        exit()
 
 
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("Server Manager")
     app = ServerManagerApp(root)
+    root.protocol("WM_DELETE_WINDOW", app.on_destroy)
     root.mainloop()
