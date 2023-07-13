@@ -4,7 +4,7 @@ from enum import Enum
 from model import Model
 
 
-class Statuses(Enum):
+class KeyStatuses(Enum):
     TAP_AND_RELEASE = (0,)
     HELD = (1,)
 
@@ -21,7 +21,7 @@ class Pipeline:
 
     # simulating keyboard service stream
     def __init__(self) -> None:
-        self.addEvent(Model(0, "s"))
+        self.addEvent(Model(0, "windows"))
         self.addEvent(Model(0, "f"))
         self.addEvent(Model(0, "p"))
         self.addEvent(Model(0, "d"))
@@ -34,7 +34,7 @@ class Pipeline:
         self.pipelineStatus = PipelineStatuses.full
 
     # keyboard service will pop events
-    def pop(self):
+    def popEvent(self):
         # controlling if popped queue item and next queue item value is equal each other.
         # checking if consecutive elements have equal values.
         popped = self.q1.get()
@@ -46,9 +46,9 @@ class Pipeline:
 
         # setting status up to equality state of consecutive elements.
         if next._key is popped._key:
-            self.status = Statuses.HELD
+            self.status = KeyStatuses.HELD
         else:
-            self.status = Statuses.TAP_AND_RELEASE
+            self.status = KeyStatuses.TAP_AND_RELEASE
 
         print(f"status: {self.status.name}, key: {popped._key}")
         return self.status, popped
