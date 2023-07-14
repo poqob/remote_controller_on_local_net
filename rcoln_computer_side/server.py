@@ -11,10 +11,12 @@ class ServerStatus(Enum):
 
 
 class UDPServer:
+    # fields
     server_status = ServerStatus.off
     stop_event = None
     serviceHandler = None
 
+    # constructure
     def __init__(self, address, port, buffer_size):
         self.address = address
         self.port = port
@@ -23,6 +25,7 @@ class UDPServer:
         self.stop_event = threading.Event()
         self.serviceHandler = ServiceHandler()
 
+    # run the server
     def start_server(self):
         self.udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.udp_socket.bind((self.address, self.port))
@@ -32,6 +35,7 @@ class UDPServer:
         self.thread.start()
         self.server_status = ServerStatus.on
 
+    # kill server and server extensions
     def kill_server(self):
         if self.udp_socket:
             self.udp_socket.close()
@@ -41,6 +45,7 @@ class UDPServer:
         self.server_status = ServerStatus.off
         print("Server killed.")
 
+    # server main activity
     def serve(self):
         while not self.stop_event.is_set():
             try:
@@ -57,6 +62,7 @@ class UDPServer:
                 # print("Error occurred:", e)
                 pass
 
+    # server destructor
     def destroy(self):
         try:
             if self.serviceHandler:
@@ -67,6 +73,7 @@ class UDPServer:
         except Exception as e:
             print(e)
 
+    # monitoring local wlan0 address of machine that runs the server
     def get_local_ip_port(self):
         # Create a temporary socket to retrieve the local IP and port
         temp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

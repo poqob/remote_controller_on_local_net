@@ -43,8 +43,8 @@ class Pipeline:
             self.status = KeyStatuses.HELD
         else:
             self.status = KeyStatuses.TAP_AND_RELEASE
-        print("zortt from pipeline pop()")
-        print(f"status: {self.status.name}, key: {popped._key}")
+        # print("zortt from pipeline pop()")
+        # print(f"status: {self.status.name}, key: {popped._key}")
         return self.status, popped
 
 
