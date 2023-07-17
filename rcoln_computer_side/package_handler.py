@@ -15,7 +15,7 @@ class PackageHandler:
         model = data.decode("utf-8")
         model = Model.fromJson(model)
         service = None
-        match model._service:
+        match model.service:
             case Services.KEYBOARD.value:
                 print("keyboard input")
                 service = Services.KEYBOARD
@@ -27,6 +27,6 @@ class PackageHandler:
                 print("other input")
                 service = Services.OTHER
             case _:
-                print(f"undefine input: {model._service}")
+                print(f"undefine input: {model.service}")
                 service = Services.OTHER
         return service, model
