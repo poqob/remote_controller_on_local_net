@@ -32,6 +32,7 @@ class Pipeline:
         self.pipelineStatus = PipelineStatuses.full
 
     def popEvent(self):
+        time.sleep(0.1)
         popped = self.q1.get()
         if self.q1.qsize() >= 1:
             next_event = self.q1.queue[0]
@@ -39,12 +40,12 @@ class Pipeline:
             next_event = Model(0, "")
             self.pipelineStatus = PipelineStatuses.empty
 
-        if next_event._key == popped._key:
+        if next_event.key == popped._key:
             self.status = KeyStatuses.HELD
         else:
             self.status = KeyStatuses.TAP_AND_RELEASE
         # print("zortt from pipeline pop()")
-        # print(f"status: {self.status.name}, key: {popped._key}")
+        print(f"status: {self.status.name}, key: {popped._key}")
         return self.status, popped
 
 
@@ -92,7 +93,7 @@ class KeyboardService:
 
     def stopService(self):
         self.flag = True
-        self.thread.join()
+        # self.thread.join()
 
     def listen(self):
         while self.flag == False:

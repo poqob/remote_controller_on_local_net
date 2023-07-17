@@ -3,12 +3,14 @@ import json
 
 
 class Model:
-    _service = None
-    _key = None
+    service = None
+    key = None
+    behaviour = None
 
-    def __init__(self, service, key) -> None:
-        self._service = service
-        self._key = key
+    def __init__(self, service, key, behaviour) -> None:
+        self.service = service
+        self.key = key
+        self.behaviour = behaviour
 
     def toJson(self) -> str:
         return json.dumps(self.__dict__)

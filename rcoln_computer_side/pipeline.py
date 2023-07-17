@@ -33,7 +33,7 @@ class Pipeline:
             next_event = Model(0, "")
             self.pipelineStatus = PipelineStatuses.empty
 
-        if next_event._key == popped._key:
+        if next_event.key == popped._key:
             self.status = KeyStatuses.HELD
         else:
             self.status = KeyStatuses.TAP_AND_RELEASE

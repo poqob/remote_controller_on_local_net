@@ -19,6 +19,7 @@ class Model:
         self._key = key
 
     def toJson(self) -> str:
+        print(json.dumps(self.__dict__))
         return json.dumps(self.__dict__)
 
     def fromJson(inpt):
@@ -38,7 +39,7 @@ class Handler:
 
     def send(self):
         model = Model(service=self.service.value, key=self.key)
-        print(model.toJson())
+        # print(model.toJson())
         bytes_data = model.toJson().encode("utf-8")
         self.sock.sendto(bytes_data, (self.ip, self.port))
 
