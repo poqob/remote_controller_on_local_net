@@ -10,16 +10,13 @@ from behaviour import Behaviour
 
 
 class Pipeline:
-    status = None
-    q1 = queue.Queue()
-
     def __init__(self) -> None:
-        pass
+        self.q1 = queue.Queue()
 
     def addEvent(self, event):
         self.q1.put(event)
 
-    def popEvent(self):
+    def popEvent(self) -> Model:
         return self.q1.get()
 
 
@@ -43,14 +40,6 @@ class ServiceHandler:
         if self.keyboardService:
             self.keyboardService.stopService()
             self.keyboardService = None
-
-
-if __name__ == "__main__":
-    sh = ServiceHandler()
-    model = Model(0, "windows+d", 0)
-    sh.accept(Services.KEYBOARD, model)
-    time.sleep(1)
-    sh.killServices()
 
 
 class KeyboardService:
@@ -88,3 +77,11 @@ class KeyboardService:
     @staticmethod
     def singlePressAndRelease(key):
         keyboard.press_and_release(key)
+
+
+if __name__ == "__main__":
+    sh = ServiceHandler()
+    model = Model(0, "windows+d", 0)
+    sh.accept(Services.KEYBOARD, model)
+    time.sleep(1)
+    sh.killServices()
