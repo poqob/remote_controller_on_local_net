@@ -26,9 +26,9 @@ class KeyboardService:
             keystatus, model = self.keyboardPipeline.popEvent()
 
             if keystatus == KeyStatuses.TAP_AND_RELEASE:
-                self.singlePressAndRelease(model._key)
+                self.singlePressAndRelease(model.key)
             elif keystatus == KeyStatuses.HELD:
-                self.singlePress(model._key)
+                self.singlePress(model.key)
 
     def addEventToPipeline(self, event):
         self.keyboardPipeline.addEvent(event=event)

@@ -3,24 +3,13 @@ from model import Model
 import time
 import keyboard
 import threading
-from enum import Enum
 import queue
+from behaviour import Behaviour
 
 # why i cannot seperate this module to modules????
 
 
-class KeyStatuses(Enum):
-    TAP_AND_RELEASE = 0
-    HELD = 1
-
-
-class PipelineStatuses(Enum):
-    empty = 0
-    full = 1
-
-
 class Pipeline:
-    pipelineStatus = PipelineStatuses.empty
     status = None
     q1 = queue.Queue()
 
@@ -29,24 +18,9 @@ class Pipeline:
 
     def addEvent(self, event):
         self.q1.put(event)
-        self.pipelineStatus = PipelineStatuses.full
 
     def popEvent(self):
-        time.sleep(0.1)
-        popped = self.q1.get()
-        if self.q1.qsize() >= 1:
-            next_event = self.q1.queue[0]
-        else:
-            next_event = Model(0, "")
-            self.pipelineStatus = PipelineStatuses.empty
-
-        if next_event.key == popped._key:
-            self.status = KeyStatuses.HELD
-        else:
-            self.status = KeyStatuses.TAP_AND_RELEASE
-        # print("zortt from pipeline pop()")
-        print(f"status: {self.status.name}, key: {popped._key}")
-        return self.status, popped
+        return self.q1.get()
 
 
 class ServiceHandler:
@@ -73,7 +47,7 @@ class ServiceHandler:
 
 if __name__ == "__main__":
     sh = ServiceHandler()
-    model = Model(0, "windows+d")
+    model = Model(0, "windows+d", 0)
     sh.accept(Services.KEYBOARD, model)
     time.sleep(1)
     sh.killServices()
@@ -93,23 +67,21 @@ class KeyboardService:
 
     def stopService(self):
         self.flag = True
-        # self.thread.join()
 
     def listen(self):
         while self.flag == False:
-            time.sleep(0.02)
-            keystatus, model = self.keyboardPipeline.popEvent()
-
-            if keystatus == KeyStatuses.TAP_AND_RELEASE:
-                self.singlePressAndRelease(model._key)
-            elif keystatus == KeyStatuses.HELD:
-                self.singlePress(model._key)
+            model = self.keyboardPipeline.popEvent()
+            behaviour = model.behaviour
+            if behaviour == Behaviour.PRESS_AND_RELEASE.value:
+                self.singlePressAndRelease(model.key)
+            elif behaviour == Behaviour.HOLD.value:
+                self.held(model.key)
 
     def addEventToPipeline(self, event):
         self.keyboardPipeline.addEvent(event=event)
 
     @staticmethod
-    def singlePress(key):
+    def held(key):
         time.sleep(0.02)
         keyboard.press(key)
 
